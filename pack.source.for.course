@@ -1,15 +1,44 @@
 #!/bin/bash
 
+function require() {
+    if [ ! -d "$1" ]; then
+        echo $2
+        exit 1
+    fi
+}
+function clean_git() {
+    rm -rf .git
+    rm .gitignore
+}
+function clean_mac() {
+    find . -name '.DS_Store' -print0 | xargs -0 rm
+}
+function clean_gradle() {
+    rm -rf .gradle
+}
+function clean_eclipse_bin() {
+    rm -rf bin
+}
+
 project="$1"
-cd "$project"
+require "$project" "What shall I pack?"
 
-rm -rf .git
-rm .gitignore
+temp="fdhsdiuzzuivhcxsheriuztuiez4567894iuhvb"
+sink="$temp/$project"
 
-find . -name '.DS_Store' -print0 | xargs -0 rm
-rm -rf .gradle
-rm -rf bin/
+mkdir "$temp"
+cp -R "$project" "$temp"
 
-cd -
+    cd "$sink"
+        clean_git
+        clean_mac
+        clean_gradle
+        clean_eclipse_bin
+    cd -
 
-zip -r "$project" "$project"
+    cd "$temp"
+        zip -r "$project" "$project"
+    cd -
+
+mv "$sink.zip" .
+rm -rf "$temp"
