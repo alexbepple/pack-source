@@ -1,0 +1,15 @@
+#!/bin/bash
+
+project="$1"
+cd "$project"
+
+rm -rf .git
+rm .gitignore
+
+find . -name '.DS_Store' -print0 | xargs -0 rm
+rm -rf .gradle
+rm -rf bin/
+
+cd -
+
+zip -r "$project" "$project"
