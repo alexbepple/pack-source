@@ -6,6 +6,9 @@ function require() {
         exit 1
     fi
 }
+function clean_ignored() {
+    git clean -xdf
+}
 function clean_git() {
     rm -rf .git
     rm .gitignore
@@ -30,6 +33,7 @@ mkdir "$temp"
 cp -R "$project" "$temp"
 
     cd "$sink"
+        clean_ignored
         clean_git
         clean_mac
         clean_gradle
