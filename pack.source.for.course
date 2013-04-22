@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function require() {
+function require_dir() {
     if [ ! -d "$1" ]; then
         echo $2
         exit 1
@@ -24,10 +24,14 @@ function clean_eclipse_bin() {
 }
 
 project=$(basename "$1")
-require "$project" "What shall I pack?"
+require_dir "$project" "What shall I pack?"
 
 temp=fdhsdiuzzuivhcxsheriuztuiez4567894iuhvb
 sink="$temp/$project"
+
+archive_basename=${2:-$project}
+archive_name="$archive_basename.zip"
+archive_path="$temp/$archive_name"
 
 mkdir "$temp"
 cp -R "$project" "$temp"
@@ -41,8 +45,8 @@ cp -R "$project" "$temp"
     cd -
 
     cd "$temp"
-        zip -r "$project" "$project"
+        zip -r "$archive_basename" "$project"
     cd -
 
-mv "$sink.zip" .
+mv "$archive_path" .
 rm -rf "$temp"
