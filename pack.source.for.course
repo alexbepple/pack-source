@@ -23,10 +23,10 @@ function clean_eclipse_bin() {
     rm -rf bin
 }
 
-project="$(basename "$1")"
+project=$(basename "$1")
 require "$project" "What shall I pack?"
 
-temp="fdhsdiuzzuivhcxsheriuztuiez4567894iuhvb"
+temp=fdhsdiuzzuivhcxsheriuztuiez4567894iuhvb
 sink="$temp/$project"
 
 mkdir "$temp"
