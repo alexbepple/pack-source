@@ -31,7 +31,7 @@ sink="$temp/$project"
 
 archive_basename=${2:-$project}
 archive_name="$archive_basename.zip"
-archive_path="$temp/$archive_name"
+archive_path="$sink/$archive_name"
 
 mkdir "$temp"
 cp -R "$project" "$temp"
@@ -42,10 +42,8 @@ cp -R "$project" "$temp"
         clean_mac
         clean_gradle
         clean_eclipse_bin
-    cd -
 
-    cd "$temp"
-        zip -r "$archive_basename" "$project"
+        zip -r "$archive_basename" *
     cd -
 
 mv "$archive_path" .
