@@ -19,7 +19,9 @@ require_dir "$project" "What shall I pack?"
 tag="$2"
 require_not_empty "$tag" "Which tag shall I pack?"
 
+archive_basename="$project"_"$tag"
+
 cd "$project"
     git checkout "$tag"
 cd -
-pack.source.for.course "$project"
+pack.source.for.course "$project" "$archive_basename"
