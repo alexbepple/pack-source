@@ -21,6 +21,15 @@ function remove_svn_artifacts() {
 function remove_mac_crap() {
     find . -name '.DS_Store' -print0 | xargs -0 rm
 }
+function clean_up() {
+    target="$1"
+    cd "$target"
+        remove_ignored_artifacts
+        remove_git_artifacts
+        remove_svn_artifacts
+        remove_mac_crap
+    cd - > /dev/null
+}
 
 function pack() {
     parent=$(dirname "$1")
@@ -45,13 +54,8 @@ project_copy="$temp/$project_name"
 mkdir "$temp"
 cp -R "$project_name" "$temp"
 
-    cd "$project_copy"
-        remove_ignored_artifacts
-        remove_git_artifacts
-        remove_svn_artifacts
-        remove_mac_crap
-    cd - > /dev/null
-
+    clean_up "$project_copy"
     pack "$project_copy" "$archive_basename"
 
 rm -rf "$temp"
+
