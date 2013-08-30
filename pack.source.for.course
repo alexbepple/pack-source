@@ -37,8 +37,11 @@ cp -R "$project" "$temp"
         remove_git_artifacts
         remove_mac_crap
 
-        zip -r "$archive_basename" * > /dev/null
     cd - > /dev/null
 
-mv "$archive_path" .
+    cd "$temp"
+        zip -r "$archive_basename" "$project" > /dev/null
+    cd - > /dev/null
+
+mv "$temp/$archive_name" .
 rm -rf "$temp"
