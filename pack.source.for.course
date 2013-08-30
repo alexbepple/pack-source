@@ -22,14 +22,25 @@ function remove_mac_crap() {
     find . -name '.DS_Store' -print0 | xargs -0 rm
 }
 
+function pack() {
+    parent=$(dirname "$1")
+    to_pack=$(basename "$1")
+    archive_basename="$2"
+    archive_name="$archive_basename.zip"
+    cd "$parent"
+        zip -r "$archive_name" "$to_pack" > /dev/null
+    cd - > /dev/null
+    mv "$parent/$archive_name" .
+}
+
 project_name=$(basename "$1")
 require_dir "$project_name" "What shall I pack?"
+
+archive_basename=${2:-$project_name}
 
 temp=fdhsdiuzzuivhcxsheriuztuiez4567894iuhvb
 project_copy="$temp/$project_name"
 
-archive_basename=${2:-$project_name}
-archive_name="$archive_basename.zip"
 
 mkdir "$temp"
 cp -R "$project_name" "$temp"
@@ -39,12 +50,8 @@ cp -R "$project_name" "$temp"
         remove_git_artifacts
         remove_svn_artifacts
         remove_mac_crap
-
     cd - > /dev/null
 
-    cd "$temp"
-        zip -r "$archive_basename" "$project_name" > /dev/null
-    cd - > /dev/null
+    pack "$project_copy" "$archive_basename"
 
-mv "$temp/$archive_name" .
 rm -rf "$temp"
