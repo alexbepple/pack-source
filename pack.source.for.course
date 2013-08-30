@@ -7,6 +7,9 @@ function require_dir() {
     fi
 }
 function clean_ignored() {
+    if [ ! -d .git ]; then
+        git init .
+    fi
     git clean -xdf
 }
 function clean_git() {
