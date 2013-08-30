@@ -42,20 +42,26 @@ function pack() {
     mv "$parent/$archive_name" .
 }
 
+function copy() {
+    to_copy="$1"
+    target="$2"
+    mkdir "$target"
+    cp -R "$to_copy" "$target"
+}
+function remove() {
+    rm -rf "$1"
+}
+
+
+
 project_name=$(basename "$1")
-require_dir "$project_name" "What shall I pack?"
-
+    require_dir "$project_name" "What shall I pack?"
 archive_basename=${2:-$project_name}
-
 temp=fdhsdiuzzuivhcxsheriuztuiez4567894iuhvb
-project_copy="$temp/$project_name"
 
 
-mkdir "$temp"
-cp -R "$project_name" "$temp"
-
-    clean_up "$project_copy"
-    pack "$project_copy" "$archive_basename"
-
-rm -rf "$temp"
+copy "$project_name" "$temp"
+clean_up "$temp/$project_name"
+pack "$temp/$project_name" "$archive_basename"
+remove "$temp"
 
