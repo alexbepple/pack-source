@@ -22,20 +22,19 @@ function remove_mac_crap() {
     find . -name '.DS_Store' -print0 | xargs -0 rm
 }
 
-project=$(basename "$1")
-require_dir "$project" "What shall I pack?"
+project_name=$(basename "$1")
+require_dir "$project_name" "What shall I pack?"
 
 temp=fdhsdiuzzuivhcxsheriuztuiez4567894iuhvb
-sink="$temp/$project"
+project_copy="$temp/$project_name"
 
-archive_basename=${2:-$project}
+archive_basename=${2:-$project_name}
 archive_name="$archive_basename.zip"
-archive_path="$sink/$archive_name"
 
 mkdir "$temp"
-cp -R "$project" "$temp"
+cp -R "$project_name" "$temp"
 
-    cd "$sink"
+    cd "$project_copy"
         remove_ignored_artifacts
         remove_git_artifacts
         remove_svn_artifacts
@@ -44,7 +43,7 @@ cp -R "$project" "$temp"
     cd - > /dev/null
 
     cd "$temp"
-        zip -r "$archive_basename" "$project" > /dev/null
+        zip -r "$archive_basename" "$project_name" > /dev/null
     cd - > /dev/null
 
 mv "$temp/$archive_name" .
