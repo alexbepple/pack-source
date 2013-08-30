@@ -11,6 +11,10 @@ function require_dir() {
         exit 1
     fi
 }
+function abort() {
+    echo "Aborting!"
+    exit
+}
 
 function remove_ignored_artifacts() {
     if [ ! -d .git ]; then
@@ -31,7 +35,8 @@ function clean_up() {
     target="$1"
 
     start_step "Cleaning up copy"
-    cd "$target"
+    cd "$target" || abort
+
         remove_ignored_artifacts
         remove_git_artifacts
         remove_svn_artifacts
@@ -46,7 +51,7 @@ function pack() {
     archive_name="$archive_basename.zip"
 
     start_step "Packing copy as '$archive_name'"
-    cd "$parent"
+    cd "$parent" || abort
         zip -r "$archive_name" "$to_pack" > /dev/null
     cd - > /dev/null
     mv "$parent/$archive_name" .
@@ -57,7 +62,7 @@ function copy_to_temp() {
     target="$2"
 
     start_step "Copying '$to_copy' to temporary directory"
-    mkdir "$target"
+    mkdir "$target" || abort
     cp -R "$to_copy" "$target"
 }
 function remove_temp() {
@@ -79,4 +84,3 @@ copy_to_temp "$path_to_project/$project_name" "$temp"
 clean_up "$temp/$project_name"
 pack "$temp/$project_name" "$archive_basename"
 remove_temp "$temp"
-
