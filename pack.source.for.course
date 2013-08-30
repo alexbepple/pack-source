@@ -6,16 +6,16 @@ function require_dir() {
         exit 1
     fi
 }
-function clean_ignored() {
+function remove_ignored_artifacts() {
     if [ ! -d .git ]; then
         git init .
     fi
     git clean -xdf
 }
-function clean_git() {
+function remove_git_artifacts() {
     rm -rf .git .gitignore .gitattributes
 }
-function clean_mac() {
+function remove_mac_crap() {
     find . -name '.DS_Store' -print0 | xargs -0 rm
 }
 
@@ -33,9 +33,9 @@ mkdir "$temp"
 cp -R "$project" "$temp"
 
     cd "$sink"
-        clean_ignored
-        clean_git
-        clean_mac
+        remove_ignored_artifacts
+        remove_git_artifacts
+        remove_mac_crap
 
         zip -r "$archive_basename" * > /dev/null
     cd - > /dev/null
