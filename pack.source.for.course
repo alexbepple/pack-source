@@ -67,13 +67,14 @@ function remove_temp() {
 
 
 
-project_name=$(basename "$1")
-    require_dir "$project_name" "What shall I pack?"
+project_rel_path="$1"
+    require_dir "$project_rel_path" "What shall I pack?"
+project_name=$(basename "$project_rel_path")
 archive_basename=${2:-$project_name}
 temp=fdhsdiuzzuivhcxsheriuztuiez4567894iuhvb
 
 
-copy_to_temp "$project_name" "$temp"
+copy_to_temp "$project_rel_path" "$temp"
 clean_up "$temp/$project_name"
 pack "$temp/$project_name" "$archive_basename"
 remove_temp "$temp"
