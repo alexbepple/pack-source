@@ -13,8 +13,7 @@ function clean_ignored() {
     git clean -xdf
 }
 function clean_git() {
-    rm -rf .git
-    rm .gitignore
+    rm -rf .git .gitignore .gitattributes
 }
 function clean_mac() {
     find . -name '.DS_Store' -print0 | xargs -0 rm
