@@ -2,7 +2,6 @@
 
 function start_step() {
     local message="$1"
-    echo
     echo "$message …"
 }
 
@@ -12,11 +11,12 @@ function require_dir() {
         exit 1
     fi
 }
+
 function remove_ignored_artifacts() {
     if [ ! -d .git ]; then
-        git init .
+        git init . > /dev/null
     fi
-    git clean -xdf
+    git clean -xdf > /dev/null
 }
 function remove_git_artifacts() {
     rm -rf .git .gitignore .gitattributes
