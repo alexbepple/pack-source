@@ -18,12 +18,6 @@ function clean_git() {
 function clean_mac() {
     find . -name '.DS_Store' -print0 | xargs -0 rm
 }
-function clean_gradle() {
-    rm -rf .gradle
-}
-function clean_eclipse_bin() {
-    rm -rf bin
-}
 
 project=$(basename "$1")
 require_dir "$project" "What shall I pack?"
@@ -42,8 +36,6 @@ cp -R "$project" "$temp"
         clean_ignored
         clean_git
         clean_mac
-        clean_gradle
-        clean_eclipse_bin
 
         zip -r "$archive_basename" * > /dev/null
     cd - > /dev/null
