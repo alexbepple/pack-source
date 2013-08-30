@@ -43,8 +43,8 @@ cp -R "$project" "$temp"
         clean_gradle
         clean_eclipse_bin
 
-        zip -r "$archive_basename" *
-    cd -
+        zip -r "$archive_basename" * > /dev/null
+    cd - > /dev/null
 
 mv "$archive_path" .
 rm -rf "$temp"
