@@ -1,5 +1,11 @@
 #!/bin/bash
 
+function start_step() {
+    local message="$1"
+    echo
+    echo "$message …"
+}
+
 function require_dir() {
     if [ ! -d "$1" ]; then
         echo $2
@@ -23,6 +29,8 @@ function remove_mac_crap() {
 }
 function clean_up() {
     target="$1"
+
+    start_step "Cleaning up copy"
     cd "$target"
         remove_ignored_artifacts
         remove_git_artifacts
@@ -36,19 +44,24 @@ function pack() {
     to_pack=$(basename "$1")
     archive_basename="$2"
     archive_name="$archive_basename.zip"
+
+    start_step "Packing copy as '$archive_name'"
     cd "$parent"
         zip -r "$archive_name" "$to_pack" > /dev/null
     cd - > /dev/null
     mv "$parent/$archive_name" .
 }
 
-function copy() {
+function copy_to_temp() {
     to_copy="$1"
     target="$2"
+
+    start_step "Copying '$to_copy' to temporary directory"
     mkdir "$target"
     cp -R "$to_copy" "$target"
 }
-function remove() {
+function remove_temp() {
+    start_step "Removing temporary directory"
     rm -rf "$1"
 }
 
@@ -60,8 +73,8 @@ archive_basename=${2:-$project_name}
 temp=fdhsdiuzzuivhcxsheriuztuiez4567894iuhvb
 
 
-copy "$project_name" "$temp"
+copy_to_temp "$project_name" "$temp"
 clean_up "$temp/$project_name"
 pack "$temp/$project_name" "$archive_basename"
-remove "$temp"
+remove_temp "$temp"
 
