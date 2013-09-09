@@ -19,6 +19,8 @@ function abort() {
 function remove_ignored_artifacts() {
     if [ ! -d .git ]; then
         git init . > /dev/null
+        git add .
+        git commit -m "dummy commit" > /dev/null
     fi
     git clean -xdf > /dev/null
 }
